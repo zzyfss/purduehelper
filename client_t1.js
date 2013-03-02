@@ -48,7 +48,7 @@ Template.details.maybeChosen = function (what) {
 
 Template.details.events({
   'click .gotoHelp_yes': function () {
-    Meteor.call("gotoHelp", Session.get("selected"), "yes");
+    Meteor.call("gotoHelp", Session.get("selected"));
     return false;
   },
   /*'click .rsvp_maybe': function () {
@@ -56,7 +56,7 @@ Template.details.events({
     return false;
   },*/
   'click .gotoHelp_no': function () {
-    Meteor.call("gotoHelp", Session.get("selected"), "no");
+    Meteor.call("cancelHelp", Session.get("selected"));
     return false;
   },
   /*'click .invite': function () {
@@ -222,7 +222,10 @@ Template.createDialog.events({
       Meteor.call('createHelpEvent', {
         title: title,
         description: description,
-        x: coords.x,
+        expire://template
+	point://template
+	location://	
+	x: coords.x,
         y: coords.y,
         public: public
       }, function (error, helpEvent) {
