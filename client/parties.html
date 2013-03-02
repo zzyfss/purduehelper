@@ -96,9 +96,9 @@
 
         {{#if canRemove}}
           <div class="alert alert-info"><small>
-              You posted this party and nobody is signed up to go, so if
+              You posted this request and nobody signed up to go, so if
               you like, you could
-              <b><a href="#" class="remove">delete this listing</a></b>.
+              <b><a href="#" class="remove">cancel this listing</a></b>.
           </small></div>
         {{/if}}
       {{/with}}
@@ -181,19 +181,22 @@
           
           <h><p>Expire Time     </h>
           <input type="time" class="title span1" step="5" align="left">
+    <!--   
       <label class="checkbox">
         <input type="checkbox" class="private">
         Private party &mdash; invitees only
       </label>
+    -->
     </div>
 
     <div class="modal-footer">
       <a href="#" class="btn cancel">Cancel</a>
-      <a href="#" class="btn btn-primary save">Add party</a>
+      <a href="#" class="btn btn-primary save">Add Request</a>
     </div>
   </div>
 </template>
 
+<!--
 <template name="inviteDialog">
   <div class="mask"> </div>
   <div class="modal">
@@ -218,4 +221,4 @@
     </div>
   </div>
 </template>
-
+-->
