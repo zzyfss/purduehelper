@@ -134,8 +134,11 @@ Template.map.rendered = function () {
       var selected = Session.get('selected');
       var selectedHelpEvent = selected && HelpEvents.findOne(selected);
       var radius = function (helpEvent) {
-        return 10 + Math.sqrt(attending(helpEvent)) * 10;
-      };
+	var scale= 1//Math.sqrt(helpEvent.points);
+	if (scale>=5)
+	    scale=5;
+        return 10 + scale * 10;
+    };
 
       // Draw a circle for each helpEvent
       var updateCircles = function (group) {
@@ -143,7 +146,7 @@ Template.map.rendered = function () {
         .attr("cx", function (helpEvent) { return helpEvent.x * 500; })
         .attr("cy", function (helpEvent) { return helpEvent.y * 500; })
         .attr("r", radius)
-	.attr("points",function(helpEvent){return helpEvent.points;})	    
+	.attr("class",function(helpEvent){ if(attending(helpEvent)) return "attending";return "waiting";})	    
         .style('opacity', function (helpEvent) {
           return selected === helpEvent._id ? 1 : 0.6;
         });
@@ -159,7 +162,7 @@ Template.map.rendered = function () {
       // Label each with the current attendance count
       var updateLabels = function (group) {
         group.attr("id", function (helpEvent) { return helpEvent._id; })
-        .text(function (helpEvent) {return attending(helpEvent) || '';})
+        .text(function (helpEvent) { return helpEvent.points.toString()})
         .attr("x", function (helpEvent) { return helpEvent.x * 500; })
         .attr("y", function (helpEvent) { return helpEvent.y * 500 + radius(helpEvent)/2 })
         .style('font-size', function (helpEvent) {
@@ -210,18 +213,18 @@ Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
     var description = template.find(".description").value;
-    var points = new Number(template.find(".points").value);
+    var points = parseInt(template.find(".points"));
+    console.log(typeof(points));
     var expire = new Date(template.find(".expire").value); 
     var loc = template.find(".loc").value;
     var coords = Session.get("createCoords");
     var rewards = template.find(".rewards").value;
-
     if (title.length && description.length) {
       Meteor.call('createHelpEvent', {
         title: title,
         description: description,
-        expire: expire,//template
-	points: points,//template
+        expire: expire, //template
+	points: points, //template
 	loc: loc,//	
 	x: coords.x,
         y: coords.y,
