@@ -54,6 +54,8 @@ Meteor.methods({
     if (! (typeof options.title === "string" && options.title.length &&
            typeof options.description === "string" &&
            options.description.length &&
+           typeof options.expire==="number" && options.expire>=0 &&
+           typeof options.point==="number" && options.point>=0 &&
            typeof options.location === "string" && options.location.length &&
            typeof options.x === "number" && options.x >= 0 && options.x <= 1 &&
            typeof options.y === "number" && options.y >= 0 && options.y <= 1))
@@ -62,58 +64,32 @@ Meteor.methods({
       throw new Meteor.Error(413, "Title too long");
     if (options.description.length > 1000)
       throw new Meteor.Error(413, "Description too long");
+    if (options.location.length>100)
+	throw new Meteor.Error(413, "Location too long");
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
-    return events.insert({
+    return Events.insert({
       owner: this.userId,
       x: options.x,
       y: options.y,
+      rewards: options.rewards,
+      location: options.location,
+      point : options.point,
+      expire: options.expire,  
       title: options.title,
       description: options.description,
-      public: !! options.public,
-      invited: [],
-      rsvps: []
+      helpers:[]
     });
   },
 
-  invite: function (eventId, userId) {
-    var event = events.findOne(eventId);
-    if (! event || event.owner !== this.userId)
-      throw new Meteor.Error(404, "No such event");
-    if (event.public)
-      throw new Meteor.Error(400,
-                             "That event is public. No need to invite people.");
-    if (userId !== event.owner && ! _.contains(event.invited, userId)) {
-      events.update(eventId, { $addToSet: { invited: userId } });
-
-      var from = contactEmail(Meteor.users.findOne(this.userId));
-      var to = contactEmail(Meteor.users.findOne(userId));
-      if (Meteor.isServer && to) {
-        // This code only runs on the server. If you didn't want clients
-        // to be able to see it, you could move it to a separate file.
-        Email.send({
-          from: "noreply@example.com",
-          to: to,
-          replyTo: from || undefined,
-          subject: "event: " + event.title,
-          text:
-"Hey, I just invited you to '" + event.title + "' on All Tomorrow's events." +
-"\n\nCome check it out: " + Meteor.absoluteUrl() + "\n"
-        });
-      }
-    }
-  },
-
-  rsvp: function (eventId, rsvp) {
+   gotoHelp: function (eventId) {
     if (! this.userId)
-      throw new Meteor.Error(403, "You must be logged in to RSVP");
-    if (! _.contains(['yes', 'no', 'maybe'], rsvp))
-      throw new Meteor.Error(400, "Invalid RSVP");
-    var event = events.findOne(eventId);
+      throw new Meteor.Error(403, "You must be logged in to offer helps");
+    var event = Events.findOne(eventId);
     if (! event)
       throw new Meteor.Error(404, "No such event");
-    if (! event.public && event.owner !== this.userId &&
+    if (! event.owner !== this.userId &&
         !_.contains(event.invited, this.userId))
       // private, but let's not tell this to the user
       throw new Meteor.Error(403, "No such event");
