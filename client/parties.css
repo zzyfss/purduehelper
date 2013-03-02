@@ -1,13 +1,14 @@
 .header {
-    background-color:red;
+    background-color:#9900FF;
 }
+
 .container
 {
-background-color:blue;
+    background-color:white;
 }
 
 .details {
-    margin-top: -18px;
+    margin-top: 20px;
 }
 
 .mask {
@@ -47,11 +48,13 @@ input.chosen {
 }
 
 .map {
+    margin:20px;
     position: relative;
     background-image: url('/soma.png');
     background-position: -20px -20px;
     width: 500px;
     height: 500px;
+    background-size:cover;
 }
 
 .map circle.attending {
