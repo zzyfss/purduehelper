@@ -92,12 +92,12 @@
         <div class="rsvp-buttons">
           {{#if currentUser}}
             <input type="button" value="I'm going!"
-                   class="btn btn-small gotoHelp_yes {{maybeChosen "yes"}}">
+                   class="btn btn-small gotoHelp_yes {{maybeChosen }}">
        <!--     <input type="button" value="Maybe"
                    class="btn btn-small rsvp_maybe {{maybeChosen "maybe"}}">
             -->
 	    <input type="button" value="No"
-                   class="btn btn-small gotoHelp_no {{maybeChosen "no"}}">
+                   class="btn btn-small gotoHelp_no {{maybeChosen }}">
           {{else}}
             <i>Sign in to help!</i>
           {{/if}}
@@ -134,26 +134,6 @@
       </div>
 <!--    {{/if}}-->
 
-			{{#if hasHelper}}
-    {{#each helperNames}}
-      <div>
-       <p> {{helperName}}</p>
-<!--      	{{#if rsvpIs "yes"}} -->
-          <span class="label label-success pull-right">Going</span>
-<!--        {{/if}}
--->
-        <!--
-	{{#if rsvpIs "maybe"}}
-          <span class="label label-info pull-right">Maybe</span>
-        {{/if}}
-        -->
-<!--	{{#if rsvpIs "no"}}  -->
-<!--           <span class="label label pull-right">No</span>
-       {{/if}}
--->
-      </div>
-    {{/each}}
-			{{/if}}}
 
 <!--    {{#unless public}}
       {{#each outstandingInvitations}}
@@ -164,7 +144,8 @@
       {{/each}}
     {{/unless}}
 -->
-    {{#if nobody}}
+   
+				{{#if nobody}}
       <div>Nobody.</div>
     {{/if}}
 	

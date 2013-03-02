@@ -110,9 +110,11 @@ Meteor.methods({
 															if (!_.contains(helpEvent.helpers,this.userId))
 															throw new Meteor.Error(404, "You are not going to help");
 															// add new helpers entry
+															
 															var new_helper = helpEvent.helpers.splice(helpEvent.helpers.indexOf(this.userId,1));
+															console.log(helpEvent.helpers);
 															HelpEvents.update(helpEventId,
-																																	{$set: {helpers :new_helper}});
+																																	{$set: {helpers :helpEvent.helpers}});
 															}
 
 															
