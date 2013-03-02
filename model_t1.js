@@ -9,15 +9,15 @@
  owner: user id
  x, y: Number (screen coordinates in the interval [0, 1])
  title, description, rewards, location: String
- point: int
- expire: int
+ point: Number
+ expire: Date
  helpers: Array of userId
  */
 
 HelpEvents = new Meteor.Collection("helpEvents");
 
 HelpEvents.allow({
-  insert: function (userId, help_event) {
+  insert: function (userId, helpEvent) {
     return false; // no cowboy inserts -- use createEvent method
   },
   update: function (userId, helpEvents, fields, modifier) {
@@ -51,7 +51,7 @@ var attending = function (helpEvent) {
 
 Meteor.methods({
   // options should include: title, description, x, y, public
-  createEvent: function (options) {
+  createHelpEvent: function (options) {
     options = options || {};
     if (! (typeof options.title === "string" && options.title.length &&
            typeof options.description === "string" &&
@@ -98,7 +98,25 @@ Meteor.methods({
       // add new helpers entry
       HelpEvents.update(helpEventId,
                      {$push: {helpers :this.userId}});
-  }
+  },
+															
+															cancelHelp: function (helpEventId) {
+															if (! this.userId)
+															throw new Meteor.Error(403, "You must be logged in to cancel helps");
+															var helpEvent = HelpEvents.findOne(helpEventId);
+															if (! helpEvent)
+															throw new Meteor.Error(404, "No such event");
+															if (this.userId==helpEvent.owner)
+															throw new Meteor.Error(404, "You could not help yourself");
+															if (!_.contains(helpEvent.helpers,this.userId))
+															throw new Meteor.Error(404, "You are not going to help");
+															// add new helpers entry
+															var new_helper = helpEvent.helpers.splice(helpEvent.helpers.indexOf(this.userId,1));
+															HelpEvents.update(helpEventId,
+																																	{$set: {helpers :new_helper}});
+															}
+
+															
 });
 
 ///////////////////////////////////////////////////////////////////////////////
