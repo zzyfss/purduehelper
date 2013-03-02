@@ -71,8 +71,8 @@
 
 <template name="details">
   <div class="details">
-    {{#if party}}
-      {{#with party}}
+    {{#if helpEvent}}
+      {{#with helpEvent}}
         <h1>{{title}}</h1>
 
         <div class="description">{{description}}</div>
@@ -104,10 +104,10 @@
       {{/with}}
     {{else}}
       <h1 class="muted pagination-centered">
-        {{#if anyParties}}
-          Click a party to select it
+        {{#if anyHelpEvents}}
+          Click a event to select it
         {{else}}
-          Sign in and double click the map to post a party
+          Sign in and double click the map to request help
         {{/if}}
       </h1>
     {{/if}}
