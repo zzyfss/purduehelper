@@ -1,11 +1,11 @@
-// All Tomorrow's events -- data model
+// All Tomorrow's HelpEvents -- data model
 // Loaded on both the client and the server
 
 ///////////////////////////////////////////////////////////////////////////////
-// events
+// HelpEvents
 
 /*
- Each event is represented by a document in the Events collection:
+ Each event is represented by a document in the HelpEvents collection:
  owner: user id
  x, y: Number (screen coordinates in the interval [0, 1])
  title, description, rewards, location: String
@@ -14,15 +14,15 @@
  helpers: Array of userId
  */
 
-Events = new Meteor.Collection("events");
+HelpEvents = new Meteor.Collection("helpEvents");
 
-Events.allow({
-  insert: function (userId, event) {
-    return false; // no cowboy inserts -- use createevent method
+HelpEvents.allow({
+  insert: function (userId, help_event) {
+    return false; // no cowboy inserts -- use createEvent method
   },
-  update: function (userId, events, fields, modifier) {
-    return _.all(events, function (event) {
-      if (userId !== event.owner)
+  update: function (userId, helpEvents, fields, modifier) {
+    return _.all(helpEvents, function (helpEvent) {
+      if (userId !== helpEvent.owner)
         return false; // not the owner
 
       var allowed = ["title", "location", "rewards", "expire", "point", "description", "x", "y"];
@@ -35,16 +35,16 @@ Events.allow({
       return true;
     });
   },
-  remove: function (userId, events) {
-    return ! _.any(events, function (event) {
+  remove: function (userId, helpEvents) {
+    return ! _.any(HelpEvents, function (helpEvent) {
       // deny if not the owner, or if other people are going
-      return event.owner !== userId || attending(event) > 0;
+      return helpEvent.owner !== userId || attending(helpEvent) > 0;
     });
   }
 });
 
-var attending = function (event) {
-  return event.helpers.length;
+var attending = function (helpEvent) {
+  return helpEvent.helpers.length;
 };
 
 Meteor.methods({
@@ -69,7 +69,7 @@ Meteor.methods({
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
-    return Events.insert({
+    return HelpEvents.insert({
       owner: this.userId,
       x: options.x,
       y: options.y,
@@ -79,46 +79,23 @@ Meteor.methods({
       expire: options.expire,  
       title: options.title,
       description: options.description,
-      helpers:[]
+      helpers: []
     });
   },
 
-   gotoHelp: function (eventId) {
+   gotoHelp: function (helpEventId) {
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in to offer helps");
-    var event = Events.findOne(eventId);
-    if (! event)
+    var helpEvent = HelpEvents.findOne(helpEventId);
+    if (! helpEvent)
       throw new Meteor.Error(404, "No such event");
-    if (! event.owner !== this.userId &&
-        !_.contains(event.invited, this.userId))
-      // private, but let's not tell this to the user
-      throw new Meteor.Error(403, "No such event");
-
-    var rsvpIndex = _.indexOf(_.pluck(event.rsvps, 'user'), this.userId);
-    if (rsvpIndex !== -1) {
-      // update existing rsvp entry
-
-      if (Meteor.isServer) {
-        // update the appropriate rsvp entry with $
-        events.update(
-          {_id: eventId, "rsvps.user": this.userId},
-          {$set: {"rsvps.$.rsvp": rsvp}});
-      } else {
-        // minimongo doesn't yet support $ in modifier. as a temporary
-        // workaround, make a modifier that uses an index. this is
-        // safe on the client since there's only one thread.
-        var modifier = {$set: {}};
-        modifier.$set["rsvps." + rsvpIndex + ".rsvp"] = rsvp;
-        events.update(eventId, modifier);
-      }
-
-      // Possible improvement: send email to the other people that are
-      // coming to the event.
-    } else {
-      // add new rsvp entry
-      events.update(eventId,
-                     {$push: {rsvps: {user: this.userId, rsvp: rsvp}}});
-    }
+    if (this.userId==helpEvent.owner)
+      throw new Meteor.Error(404, "You could not help you self"); 
+    if (_.contains(helpEvent.helpers,this.userId))
+      throw new Meteor.Error(404, "You are going to help");
+      // add new helpers entry
+      HelpEvents.update(helpEventId,
+                     {$push: {helpers :this.userId}});
   }
 });
 

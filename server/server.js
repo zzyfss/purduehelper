@@ -5,7 +5,6 @@ Meteor.publish("directory", function () {
 });
 
 Meteor.publish("parties", function () {
-  return Events.find(
+  return Parties.find(
     {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
 });
-
