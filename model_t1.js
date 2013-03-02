@@ -56,7 +56,7 @@ Meteor.methods({
     if (! (typeof options.title === "string" && options.title.length &&
            typeof options.description === "string" &&
            options.description.length &&
-           typeof options.expire==="number" && options.expire>=0 &&
+           typeof options.expire==="date" && options.expire>=0 &&
            typeof options.points==="number" && options.points>=0 &&
            typeof options.loc === "string" && options.loc.length &&
 											typeof options.rewards === "string" &&
