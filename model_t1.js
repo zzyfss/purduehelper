@@ -43,9 +43,11 @@ HelpEvents.allow({
   }
 });
 
+/*
 var attending = function (helpEvent) {
   return helpEvent.helpers.length;
 };
+*/
 
 Meteor.methods({
   // options should include: title, description, x, y, public
@@ -101,7 +103,7 @@ Meteor.methods({
 
 ///////////////////////////////////////////////////////////////////////////////
 // Users
-
+/*
 var displayName = function (user) {
   if (user.profile && user.profile.name)
     return user.profile.name;
@@ -114,4 +116,4 @@ var contactEmail = function (user) {
   if (user.services && user.services.facebook && user.services.facebook.email)
     return user.services.facebook.email;
   return null;
-};
+};*/
