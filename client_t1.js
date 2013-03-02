@@ -96,7 +96,7 @@ Template.attendance.gotoHelpIs = function (what) {
 };
 
 Template.attendance.nobody = function () {
-  return ! this.public && (this.helpers.length  === 0);
+  return this.helpers.length  === 0;
   //return ! this.public && (this.rsvps.length + this.invited.length === 0);
 };
 
@@ -146,9 +146,7 @@ Template.map.rendered = function () {
         .attr("cx", function (helpEvent) { return helpEvent.x * 500; })
         .attr("cy", function (helpEvent) { return helpEvent.y * 500; })
         .attr("r", radius)
-        .attr("class", function (helpEvent) {
-          return helpEvent.public ? "public" : "private";
-        })
+	.attr("point",function(helpEvent){return helpEvent.point;})	    
         .style('opacity', function (helpEvent) {
           return selected === helpEvent._id ? 1 : 0.6;
         });
@@ -215,24 +213,25 @@ Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
     var description = template.find(".description").value;
-    var public = ! template.find(".private").checked;
+    var point = template.find(".point").value;
+    var expire = template.find(".expire").value;
+    var location = template.find(".location").value;
     var coords = Session.get("createCoords");
+    var rewards = template.find(".rewards").value;
 
     if (title.length && description.length) {
       Meteor.call('createHelpEvent', {
         title: title,
         description: description,
-        expire://template
-	point://template
-	location://	
+        expire: expire//template
+	point: point//template
+	location: location//	
 	x: coords.x,
         y: coords.y,
-        public: public
+        rewards : rewards
       }, function (error, helpEvent) {
         if (! error) {
           Session.set("selected", helpEvent);
-          if (! public && Meteor.users.find().count() > 1)
-            openInviteDialog();
         }
       });
       Session.set("showCreateDialog", false);

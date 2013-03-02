@@ -36,7 +36,7 @@ HelpEvents.allow({
     });
   },
   remove: function (userId, helpEvents) {
-    return ! _.any(HelpEvents, function (helpEvent) {
+    return ! _.any(helpEvents, function (helpEvent) {
       // deny if not the owner, or if other people are going
       return helpEvent.owner !== userId || attending(helpEvent) > 0;
     });
@@ -59,6 +59,7 @@ Meteor.methods({
            typeof options.expire==="number" && options.expire>=0 &&
            typeof options.point==="number" && options.point>=0 &&
            typeof options.location === "string" && options.location.length &&
+											typeof options.rewards === "string" &&
            typeof options.x === "number" && options.x >= 0 && options.x <= 1 &&
            typeof options.y === "number" && options.y >= 0 && options.y <= 1))
       throw new Meteor.Error(400, "Required parameter missing");
