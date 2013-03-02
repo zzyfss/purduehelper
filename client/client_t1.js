@@ -72,10 +72,6 @@ Template.details.events({
 ///////////////////////////////////////////////////////////////////////////////
 // HelpEvent attendance widget
 
-Template.attendance.gotoHelpName = function () {
-  var user = Meteor.users.findOne(this.user);
-  return displayName(user);
-};
 
 /*Template.attendance.outstandingInvitations = function () {
   var helpEvent = HelpEvents.findOne(this._id);
@@ -91,6 +87,19 @@ Template.attendance.gotoHelpName = function () {
 };
 */
 
+Template.attendance.helperNames = function (){
+    var helpEvent = HelpEvents.findOne(this._id);
+    return helpEvent.helpers;
+}
+
+Template.attendance.hasHelper = function(){
+  var helpEvent = HelpEvents.findOne(this._id);
+  return helpEvent.helpers.length;
+}
+
+Template.attendance.helperName = function () {
+  return displayName(this);
+};
 
 Template.attendance.nobody = function () {
   return this.helpers.length  === 0;
@@ -134,9 +143,9 @@ Template.map.rendered = function () {
       var selected = Session.get('selected');
       var selectedHelpEvent = selected && HelpEvents.findOne(selected);
       var radius = function (helpEvent) {
-	var scale= 1//Math.sqrt(helpEvent.points);
-	if (scale>=5)
-	    scale=5;
+	var scale= Math.sqrt(helpEvent.points/10);
+	if (scale>=2)
+	    scale=2;
         return 10 + scale * 10;
     };
 
@@ -162,11 +171,11 @@ Template.map.rendered = function () {
       // Label each with the current attendance count
       var updateLabels = function (group) {
         group.attr("id", function (helpEvent) { return helpEvent._id; })
-        .text(function (helpEvent) { return helpEvent.points.toString()})
+        .text(function (helpEvent) { return helpEvent.points})
         .attr("x", function (helpEvent) { return helpEvent.x * 500; })
         .attr("y", function (helpEvent) { return helpEvent.y * 500 + radius(helpEvent)/2 })
         .style('font-size', function (helpEvent) {
-          return radius(helpEvent) * 1.25 + "px";
+          return radius(helpEvent) * 1.1 + "px";
         });
       };
 
@@ -213,8 +222,8 @@ Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
     var description = template.find(".description").value;
-    var points = parseInt(template.find(".points"));
-    console.log(typeof(points));
+    var points = parseInt(template.find(".points").value);
+
     var expire = new Date(template.find(".expire").value); 
     var loc = template.find(".loc").value;
     var coords = Session.get("createCoords");
