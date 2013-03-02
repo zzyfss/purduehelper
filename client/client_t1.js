@@ -213,7 +213,7 @@ Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
     var description = template.find(".description").value;
-    var pointss = template.find(".points").value;
+    var points = template.find(".points").value;
     var expire = template.find(".expire").value;
     var loc = template.find(".loc").value;
     var coords = Session.get("createCoords");
@@ -223,10 +223,10 @@ Template.createDialog.events({
       Meteor.call('createHelpEvent', {
         title: title,
         description: description,
-        expire: expire//template
-								points: points//template
-								loc: loc//	
-								x: coords.x,
+        expire: expire,//template
+	points: points,//template
+	loc: loc,//	
+	x: coords.x,
         y: coords.y,
         rewards : rewards
       }, function (error, helpEvent) {
