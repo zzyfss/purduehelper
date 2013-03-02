@@ -75,7 +75,12 @@
       {{#with helpEvent}}
         <h1>{{title}}</h1>
 
-        <div class="description">{{description}}</div>
+        <div class="description">
+	<p> {{description}}  	</p>
+	<p> {{expire}}  	</p>
+	<p> {{loc}} 		</p>
+	<p> {{rewards}}		</p>
+	</div>
 
         {{> attendance}}
 
@@ -117,31 +122,33 @@
 <template name="attendance">
   <div class="attendance well well-small">
     <div class="muted who"><b>Who</b></div>
-    {{#if public}}
+<!--   {{#if public}}-->
       <div>
         <b>Everyone</b>
         <span class="label label-inverse pull-right">Invited</span>
       </div>
-    {{/if}}
+<!--    {{/if}}-->
 
-    {{#each rsvps}}
+    {{#each helpers}}
       <div>
-        {{rsvpName}}
-        {{#if rsvpIs "yes"}}
+       <p> {{this}}</p>
+<!--      	{{#if rsvpIs "yes"}} -->
           <span class="label label-success pull-right">Going</span>
-        {{/if}}
+<!--        {{/if}}
+-->
         <!--
 	{{#if rsvpIs "maybe"}}
           <span class="label label-info pull-right">Maybe</span>
         {{/if}}
         -->
-										{{#if rsvpIs "no"}}
+<!--	{{#if rsvpIs "no"}}  -->
           <span class="label label pull-right">No</span>
-        {{/if}}
+<!--        {{/if}}
+-->
       </div>
     {{/each}}
 
-    {{#unless public}}
+<!--    {{#unless public}}
       {{#each outstandingInvitations}}
         <div>
           {{invitationName}}
@@ -149,7 +156,7 @@
         </div>
       {{/each}}
     {{/unless}}
-
+-->
     {{#if nobody}}
       <div>Nobody.</div>
     {{/if}}
