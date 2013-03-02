@@ -36,15 +36,15 @@ Template.details.canRemove = function () {
   return this.owner === Meteor.userId() && attending(this) === 0;
 };
 
-/*
-Template.details.maybeChosen = function (what) {
-  var myRsvp = _.find(this.rsvps, function (r) {
-    return r.user === Meteor.userId();
-  }) || {};
 
-  return what == myRsvp.rsvp ? "chosen btn-inverse" : "";
+Template.details.maybeChosen = function (what) {
+  var helpId = _.find(this.helpers, function (userId) {
+    return userId === Meteor.userId();
+  }) || null;
+
+  return what == helpId? "chosen btn-inverse" : "";
 };
-*/
+
 
 Template.details.events({
   'click .gotoHelp_yes': function () {
@@ -91,9 +91,6 @@ Template.attendance.gotoHelpName = function () {
 };
 */
 
-Template.attendance.gotoHelpIs = function (what) {
-  return this.gotoHelp === what;
-};
 
 Template.attendance.nobody = function () {
   return this.helpers.length  === 0;

@@ -82,7 +82,7 @@ Meteor.methods({
       expire: options.expire,  
       title: options.title,
       description: options.description,
-      helpers: []
+						helpers: []
     });
   },
 
@@ -107,8 +107,6 @@ Meteor.methods({
 															var helpEvent = HelpEvents.findOne(helpEventId);
 															if (! helpEvent)
 															throw new Meteor.Error(404, "No such event");
-															if (this.userId==helpEvent.owner)
-															throw new Meteor.Error(404, "You could not help yourself");
 															if (!_.contains(helpEvent.helpers,this.userId))
 															throw new Meteor.Error(404, "You are not going to help");
 															// add new helpers entry
