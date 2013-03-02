@@ -146,7 +146,7 @@ Template.map.rendered = function () {
         .attr("cx", function (helpEvent) { return helpEvent.x * 500; })
         .attr("cy", function (helpEvent) { return helpEvent.y * 500; })
         .attr("r", radius)
-	.attr("point",function(helpEvent){return helpEvent.point;})	    
+	.attr("points",function(helpEvent){return helpEvent.points;})	    
         .style('opacity', function (helpEvent) {
           return selected === helpEvent._id ? 1 : 0.6;
         });
@@ -213,9 +213,9 @@ Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
     var description = template.find(".description").value;
-    var point = template.find(".point").value;
+    var pointss = template.find(".points").value;
     var expire = template.find(".expire").value;
-    var location = template.find(".location").value;
+    var loc = template.find(".loc").value;
     var coords = Session.get("createCoords");
     var rewards = template.find(".rewards").value;
 
@@ -224,9 +224,9 @@ Template.createDialog.events({
         title: title,
         description: description,
         expire: expire//template
-	point: point//template
-	location: location//	
-	x: coords.x,
+								points: points//template
+								loc: loc//	
+								x: coords.x,
         y: coords.y,
         rewards : rewards
       }, function (error, helpEvent) {

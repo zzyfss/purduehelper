@@ -8,8 +8,8 @@
  Each event is represented by a document in the HelpEvents collection:
  owner: user id
  x, y: Number (screen coordinates in the interval [0, 1])
- title, description, rewards, location: String
- point: Number
+ title, description, rewards, loc: String
+ points: Number
  expire: Date
  helpers: Array of userId
  */
@@ -25,7 +25,7 @@ HelpEvents.allow({
       if (userId !== helpEvent.owner)
         return false; // not the owner
 
-      var allowed = ["title", "location", "rewards", "expire", "point", "description", "x", "y"];
+      var allowed = ["title", "loc", "rewards", "expire", "points", "description", "x", "y"];
       if (_.difference(fields, allowed).length)
         return false; // tried to write to forbidden field
 
@@ -57,8 +57,8 @@ Meteor.methods({
            typeof options.description === "string" &&
            options.description.length &&
            typeof options.expire==="number" && options.expire>=0 &&
-           typeof options.point==="number" && options.point>=0 &&
-           typeof options.location === "string" && options.location.length &&
+           typeof options.points==="number" && options.points>=0 &&
+           typeof options.loc === "string" && options.loc.length &&
 											typeof options.rewards === "string" &&
            typeof options.x === "number" && options.x >= 0 && options.x <= 1 &&
            typeof options.y === "number" && options.y >= 0 && options.y <= 1))
@@ -67,8 +67,8 @@ Meteor.methods({
       throw new Meteor.Error(413, "Title too long");
     if (options.description.length > 1000)
       throw new Meteor.Error(413, "Description too long");
-    if (options.location.length>100)
-	throw new Meteor.Error(413, "Location too long");
+    if (options.loc.length>100)
+	throw new Meteor.Error(413, "location too long");
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
@@ -77,8 +77,8 @@ Meteor.methods({
       x: options.x,
       y: options.y,
       rewards: options.rewards,
-      location: options.location,
-      point : options.point,
+      loc: options.loc,
+      points : options.points,
       expire: options.expire,  
       title: options.title,
       description: options.description,
