@@ -130,10 +130,12 @@
         {{#if rsvpIs "yes"}}
           <span class="label label-success pull-right">Going</span>
         {{/if}}
-        {{#if rsvpIs "maybe"}}
+        <!--
+	{{#if rsvpIs "maybe"}}
           <span class="label label-info pull-right">Maybe</span>
         {{/if}}
-        {{#if rsvpIs "no"}}
+        -->
+	{{#if rsvpIs "no"}}
           <span class="label label pull-right">No</span>
         {{/if}}
       </div>
@@ -151,12 +153,14 @@
     {{#if nobody}}
       <div>Nobody.</div>
     {{/if}}
-
+	
+<!--
     {{#if canInvite}}
       <div class="invite">
         <a href="#" class="btn btn-mini invite">Invite people</a>
       </div>
     {{/if}}
+-->
   </div>
 </template>
 
@@ -179,8 +183,15 @@
       <label>Description</label>
       <textarea class="description span5"></textarea>
           
-          <h><p>Expire Time     </h>
-          <input type="time" class="title span1" step="5" align="left">
+      <h><p>Expire Time     </h>
+      <input type="time" class="title span1" step="5" align="left">
+    
+      <form>
+      Location: <input type="text" name="loc"><br>
+      Points: <input type="text" name="points"><br>
+      Rewards: <input type="text" name="rewards">
+      </form> 
+
     <!--   
       <label class="checkbox">
         <input type="checkbox" class="private">
