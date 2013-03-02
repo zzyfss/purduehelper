@@ -4,10 +4,11 @@ Meteor.publish("directory", function () {
   return Meteor.users.find({}, {fields: {emails: 1, profile: 1}});
 });
 
-Meteor.publish("parties", function () {
+/*Meteor.publish("parties", function () {
   return Parties.find(
     {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
 });
+	*/
 
 Meteor.publish("helpEvents", function() {
 															return HelpEvents.find({});

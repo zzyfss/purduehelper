@@ -213,8 +213,8 @@ Template.createDialog.events({
   'click .save': function (event, template) {
     var title = template.find(".title").value;
     var description = template.find(".description").value;
-    var points = template.find(".points").value;
-    var expire = template.find(".expire").value;
+    var points = new Number(template.find(".points").value);
+    var expire = new Date(template.find(".expire").value); 
     var loc = template.find(".loc").value;
     var coords = Session.get("createCoords");
     var rewards = template.find(".rewards").value;
