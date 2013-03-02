@@ -56,10 +56,10 @@ Meteor.methods({
     if (! (typeof options.title === "string" && options.title.length &&
            typeof options.description === "string" &&
            options.description.length &&
-          // typeof options.expire==="date" &&
-           //typeof options.points==="number" &&
-           //typeof options.loc === "string" && options.loc.length &&
-											//typeof options.rewards === "string" &&
+           //typeof options.expire==="date" &&
+           typeof options.points==="number" &&
+           typeof options.loc === "string" && options.loc.length &&
+											typeof options.rewards === "string" &&
            typeof options.x === "number" && options.x >= 0 && options.x <= 1 &&
            typeof options.y === "number" && options.y >= 0 && options.y <= 1))
       throw new Meteor.Error(400, "Required parameter missing");
