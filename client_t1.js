@@ -36,6 +36,7 @@ Template.details.canRemove = function () {
   return this.owner === Meteor.userId() && attending(this) === 0;
 };
 
+/*
 Template.details.maybeChosen = function (what) {
   var myRsvp = _.find(this.rsvps, function (r) {
     return r.user === Meteor.userId();
@@ -43,24 +44,25 @@ Template.details.maybeChosen = function (what) {
 
   return what == myRsvp.rsvp ? "chosen btn-inverse" : "";
 };
+*/
 
 Template.details.events({
-  'click .rsvp_yes': function () {
-    Meteor.call("rsvp", Session.get("selected"), "yes");
+  'click .gotoHelp_yes': function () {
+    Meteor.call("gotoHelp", Session.get("selected"), "yes");
     return false;
   },
-  'click .rsvp_maybe': function () {
+  /*'click .rsvp_maybe': function () {
     Meteor.call("rsvp", Session.get("selected"), "maybe");
     return false;
-  },
-  'click .rsvp_no': function () {
-    Meteor.call("rsvp", Session.get("selected"), "no");
+  },*/
+  'click .gotoHelp_no': function () {
+    Meteor.call("gotoHelp", Session.get("selected"), "no");
     return false;
   },
-  'click .invite': function () {
+  /*'click .invite': function () {
     openInviteDialog();
     return false;
-  },
+  },*/
   'click .remove': function () {
     HelpEvents.remove(this._id);
     return false;
@@ -70,34 +72,38 @@ Template.details.events({
 ///////////////////////////////////////////////////////////////////////////////
 // HelpEvent attendance widget
 
-Template.attendance.rsvpName = function () {
+Template.attendance.gotoHelpName = function () {
   var user = Meteor.users.findOne(this.user);
   return displayName(user);
 };
 
-Template.attendance.outstandingInvitations = function () {
+/*Template.attendance.outstandingInvitations = function () {
   var helpEvent = HelpEvents.findOne(this._id);
   return Meteor.users.find({$and: [
     {_id: {$in: helpEvent.invited}}, // they're invited
     {_id: {$nin: _.pluck(helpEvent.rsvps, 'user')}} // but haven't RSVP'd
   ]});
 };
+*/
 
-Template.attendance.invitationName = function () {
+/*Template.attendance.invitationName = function () {
   return displayName(this);
 };
+*/
 
-Template.attendance.rsvpIs = function (what) {
-  return this.rsvp === what;
+Template.attendance.gotoHelpIs = function (what) {
+  return this.gotoHelp === what;
 };
 
 Template.attendance.nobody = function () {
-  return ! this.public && (this.rsvps.length + this.invited.length === 0);
+  return ! this.public && (this.helpers.length  === 0);
+  //return ! this.public && (this.rsvps.length + this.invited.length === 0);
 };
 
-Template.attendance.canInvite = function () {
+/*Template.attendance.canInvite = function () {
   return ! this.public && this.owner === Meteor.userId();
 };
+*/
 
 ///////////////////////////////////////////////////////////////////////////////
 // Map display
@@ -245,6 +251,7 @@ Template.createDialog.error = function () {
 ///////////////////////////////////////////////////////////////////////////////
 // Invite dialog
 
+/*
 var openInviteDialog = function () {
   Session.set("showInviteDialog", true);
 };
@@ -274,3 +281,4 @@ Template.inviteDialog.uninvited = function () {
 Template.inviteDialog.displayName = function () {
   return displayName(this);
 };
+*/
