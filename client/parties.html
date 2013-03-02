@@ -1,5 +1,5 @@
 <head>
-  <title>All Tomorrow's Parties</title>
+  <title>All Requests for Help</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -11,11 +11,11 @@
   {{#if showCreateDialog}}
     {{> createDialog}}
   {{/if}}
-
+<!--
   {{#if showInviteDialog}}
     {{> inviteDialog}}
   {{/if}}
-
+-->
   <div class="container">
     <div class="row">
       <div class="span1"> </div>
@@ -23,7 +23,7 @@
       <div class="span10">
         <div class="header row">
           <div class="span5">
-            <h3 style="margin-bottom: 0px">All Tomorrow's Parties</h3>
+            <h3 style="margin-bottom: 0px">All Requests</h3>
           </div>
           <div class="span5">
             <div style="float: right">
@@ -37,7 +37,7 @@
             {{> map}}
             {{#if currentUser}}
             <div class="pagination-centered">
-              <em><small>Double click the map to post a party!</small></em>
+              <em><small>Double click the map to post a request!</small></em>
             </div>
             {{/if}}
           </div>
@@ -83,12 +83,13 @@
           {{#if currentUser}}
             <input type="button" value="I'm going!"
                    class="btn btn-small rsvp_yes {{maybeChosen "yes"}}">
-            <input type="button" value="Maybe"
+       <!--     <input type="button" value="Maybe"
                    class="btn btn-small rsvp_maybe {{maybeChosen "maybe"}}">
-            <input type="button" value="No"
+            -->
+	    <input type="button" value="No"
                    class="btn btn-small rsvp_no {{maybeChosen "no"}}">
           {{else}}
-            <i>Sign in to RSVP for this party.</i>
+            <i>Sign in to help!</i>
           {{/if}}
           <p><small>Posted by {{creatorName}}</small></p>
         </div>
